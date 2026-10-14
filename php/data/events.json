@@ -1,0 +1,296 @@
+[
+    {
+        "id": "c7cf4835c0aed6f7",
+        "receivedAt": "2026-10-14T11:40:23+02:00",
+        "rawSha256": "aef2ec4e0f5411f82723c9f53ca5409b40338fd30fb4f6ab8762f420c8cdfc29",
+        "dedupeKey": "58G7ACNKF7QVF8E0|DEV-GATE-4AA253F3|2026-10-14 15:10:25|DENIED",
+        "headers": {
+            "content-type": "application\/json",
+            "accept": "application\/json",
+            "user-agent": "SmartQR-Access-Webhook\/1.0",
+            "authorization": null,
+            "x-webhook-signature": "70cb996fb6eaad5b892c672f9f559c6b0509d47fe1c12ba1d1e8169712811bb9",
+            "x-webhook-timestamp": "1791970825"
+        },
+        "verification": {
+            "bearerChecked": false,
+            "bearerValid": null,
+            "signatureChecked": false,
+            "signatureValid": null,
+            "timestampChecked": true,
+            "timestampValid": true,
+            "timestampDiffSeconds": 2,
+            "computedSignature": null,
+            "isDuplicate": false,
+            "rejectedReason": null
+        },
+        "payload": {
+            "event": "gate_scan",
+            "token": "58G7ACNKF7QVF8E0",
+            "device_id": "DEV-GATE-4AA253F3",
+            "scanned_at": "2026-10-14 15:10:25",
+            "result": "DENIED",
+            "status": "Token Usage Limit Reached (2\/2)",
+            "usage": {
+                "max_uses": 2,
+                "used": 2,
+                "remaining": 0,
+                "token_status": "USED",
+                "expires_at": "2026-10-14 16:08:04"
+            },
+            "payload_version": "1.1"
+        }
+    },
+    {
+        "id": "14702f8ccd492f8e",
+        "receivedAt": "2026-10-14T11:39:32+02:00",
+        "rawSha256": "ea16a6898772b2160b55546fc182476ab5ad1219d6d8dfe1ff2d012c15330524",
+        "dedupeKey": "58G7ACNKF7QVF8E0|DEV-GATE-4AA253F3|2026-10-14 15:09:34|DENIED",
+        "headers": {
+            "content-type": "application\/json",
+            "accept": "application\/json",
+            "user-agent": "SmartQR-Access-Webhook\/1.0",
+            "authorization": null,
+            "x-webhook-signature": "31b74d32a0392f533262d6f6d2b2a65527bc2462c4894e818e12631533d61ba7",
+            "x-webhook-timestamp": "1791970774"
+        },
+        "verification": {
+            "bearerChecked": false,
+            "bearerValid": null,
+            "signatureChecked": false,
+            "signatureValid": null,
+            "timestampChecked": true,
+            "timestampValid": true,
+            "timestampDiffSeconds": 2,
+            "computedSignature": null,
+            "isDuplicate": false,
+            "rejectedReason": null
+        },
+        "payload": {
+            "event": "gate_scan",
+            "token": "58G7ACNKF7QVF8E0",
+            "device_id": "DEV-GATE-4AA253F3",
+            "scanned_at": "2026-10-14 15:09:34",
+            "result": "DENIED",
+            "status": "Token Usage Limit Reached (2\/2)",
+            "usage": {
+                "max_uses": 2,
+                "used": 2,
+                "remaining": 0,
+                "token_status": "USED",
+                "expires_at": "2026-10-14 16:08:04"
+            },
+            "payload_version": "1.1"
+        }
+    },
+    {
+        "id": "f655edb5a8f4fadd",
+        "receivedAt": "2026-10-14T11:38:43+02:00",
+        "rawSha256": "ddbeec093aea4d97d9f515939aa21fc5d5c40a9c7876d07f5d5d1d8ee8f9db73",
+        "dedupeKey": "58G7ACNKF7QVF8E0|DEV-GATE-4AA253F3|2026-10-14 15:08:45|ALLOWED",
+        "headers": {
+            "content-type": "application\/json",
+            "accept": "application\/json",
+            "user-agent": "SmartQR-Access-Webhook\/1.0",
+            "authorization": null,
+            "x-webhook-signature": "181faab15ccfd70bef3e791294f7c1f0532922c70bb92aa0d5111ab4e4c012d2",
+            "x-webhook-timestamp": "1791970725"
+        },
+        "verification": {
+            "bearerChecked": false,
+            "bearerValid": null,
+            "signatureChecked": false,
+            "signatureValid": null,
+            "timestampChecked": true,
+            "timestampValid": true,
+            "timestampDiffSeconds": 2,
+            "computedSignature": null,
+            "isDuplicate": false,
+            "rejectedReason": null
+        },
+        "payload": {
+            "event": "gate_scan",
+            "token": "58G7ACNKF7QVF8E0",
+            "device_id": "DEV-GATE-4AA253F3",
+            "scanned_at": "2026-10-14 15:08:45",
+            "result": "ALLOWED",
+            "status": "Access Granted (Gate Unlocked)",
+            "usage": {
+                "max_uses": 2,
+                "used": 2,
+                "remaining": 0,
+                "token_status": "USED",
+                "expires_at": "2026-10-14 16:08:04"
+            },
+            "payload_version": "1.1"
+        }
+    },
+    {
+        "id": "927783cde0b0b7f1",
+        "receivedAt": "2026-10-14T11:38:11+02:00",
+        "rawSha256": "46ba0a07cef11c294aa6a9482a3d763a848734e1fa6fa2a67ec7c85c85b300ca",
+        "dedupeKey": "58G7ACNKF7QVF8E0|DEV-GATE-4AA253F3|2026-10-14 15:08:12|ALLOWED",
+        "headers": {
+            "content-type": "application\/json",
+            "accept": "application\/json",
+            "user-agent": "SmartQR-Access-Webhook\/1.0",
+            "authorization": null,
+            "x-webhook-signature": "6d2acef6a9ecb1aca18addd6e03547665b1d66625ca0b412e97a147299bc2342",
+            "x-webhook-timestamp": "1791970692"
+        },
+        "verification": {
+            "bearerChecked": false,
+            "bearerValid": null,
+            "signatureChecked": false,
+            "signatureValid": null,
+            "timestampChecked": true,
+            "timestampValid": true,
+            "timestampDiffSeconds": 1,
+            "computedSignature": null,
+            "isDuplicate": false,
+            "rejectedReason": null
+        },
+        "payload": {
+            "event": "gate_scan",
+            "token": "58G7ACNKF7QVF8E0",
+            "device_id": "DEV-GATE-4AA253F3",
+            "scanned_at": "2026-10-14 15:08:12",
+            "result": "ALLOWED",
+            "status": "Access Granted (Gate Unlocked)",
+            "usage": {
+                "max_uses": 2,
+                "used": 1,
+                "remaining": 1,
+                "token_status": "ACTIVE",
+                "expires_at": "2026-10-14 16:08:04"
+            },
+            "payload_version": "1.1"
+        }
+    },
+    {
+        "id": "b1fd9ac73266084e",
+        "receivedAt": "2026-10-14T11:29:09+02:00",
+        "rawSha256": "48ea25c9752e93d075ca18ac6d11fcbfbb0dbbaaed8e6d7584489f0002373082",
+        "dedupeKey": "REJECTED_48ea25c9752e93d075ca18ac6d11fcbfbb0dbbaaed8e6d7584489f0002373082",
+        "headers": {
+            "content-type": "application\/json",
+            "accept": "application\/json",
+            "user-agent": "SmartQR-Access-Webhook\/1.0",
+            "authorization": "Bearer test_bea...",
+            "x-webhook-signature": "ccff27e6541f23e1036c7bef1140392579842ab6bdfd5fe553cd424b8d6fd564",
+            "x-webhook-timestamp": "1791969848"
+        },
+        "verification": {
+            "bearerChecked": true,
+            "bearerValid": true,
+            "signatureChecked": true,
+            "signatureValid": true,
+            "timestampChecked": true,
+            "timestampValid": false,
+            "timestampDiffSeconds": 301,
+            "computedSignature": "ccff27e6541f23e1036c7bef1140392579842ab6bdfd5fe553cd424b8d6fd564",
+            "isDuplicate": false,
+            "rejectedReason": "Stale request: timestamp drift of 301s exceeds tolerance of 300s"
+        },
+        "payload": {
+            "event": "gate_scan",
+            "token": "PHP_9942CB6A",
+            "device_id": "DEV-GATE-001D848D",
+            "scanned_at": "2026-10-14 11:24:08",
+            "result": "REJECTED_401",
+            "status": "Rejected: Stale request: timestamp drift of 301s exceeds tolerance of 300s",
+            "usage": {
+                "max_uses": 2,
+                "used": 1,
+                "remaining": 1,
+                "token_status": "ACTIVE",
+                "expires_at": "2026-10-31 23:59:59"
+            },
+            "payload_version": "1.1"
+        }
+    },
+    {
+        "id": "c24c93b37e7e7574",
+        "receivedAt": "2026-10-14T10:43:20+02:00",
+        "rawSha256": "b75dd862965a6ad1a80679f2d6478c6ae3848df0199a61628970e596be54493e",
+        "dedupeKey": "DENIED_2400B184|DEV-GATE-001D848D|2026-10-14 10:43:20|DENIED",
+        "headers": {
+            "content-type": "application\/json",
+            "accept": "application\/json",
+            "user-agent": "SmartQR-Access-Webhook\/1.0",
+            "authorization": "Bearer test_bea...",
+            "x-webhook-signature": "5d75382ba6b86e98850bd6795249c595145b4d20e8d0e62832d04c38a194d92c",
+            "x-webhook-timestamp": "1791967400"
+        },
+        "verification": {
+            "bearerChecked": true,
+            "bearerValid": true,
+            "signatureChecked": true,
+            "signatureValid": true,
+            "timestampChecked": true,
+            "timestampValid": true,
+            "timestampDiffSeconds": 0,
+            "computedSignature": "5d75382ba6b86e98850bd6795249c595145b4d20e8d0e62832d04c38a194d92c",
+            "isDuplicate": false,
+            "rejectedReason": null
+        },
+        "payload": {
+            "event": "gate_scan",
+            "token": "DENIED_2400B184",
+            "device_id": "DEV-GATE-001D848D",
+            "scanned_at": "2026-10-14 10:43:20",
+            "result": "DENIED",
+            "status": "Token Usage Limit Reached (2\/2)",
+            "usage": {
+                "max_uses": 2,
+                "used": 2,
+                "remaining": 0,
+                "token_status": "USED",
+                "expires_at": "2026-10-31 23:59:59"
+            },
+            "payload_version": "1.1"
+        }
+    },
+    {
+        "id": "1253104ea176fc67",
+        "receivedAt": "2026-10-14T10:43:19+02:00",
+        "rawSha256": "319ab93ebdefd8fef98298f8813eee334c4ff52e487c95c9626bce4203e5c49e",
+        "dedupeKey": "ALLOW_6663D079|DEV-GATE-001D848D|2026-10-14 10:43:19|ALLOWED",
+        "headers": {
+            "content-type": "application\/json",
+            "accept": "application\/json",
+            "user-agent": "SmartQR-Access-Webhook\/1.0",
+            "authorization": "Bearer test_bea...",
+            "x-webhook-signature": "b77ff488bbfc29c996ee58d24dc6da9016cba5979bb0763361a164c775e050c5",
+            "x-webhook-timestamp": "1791967399"
+        },
+        "verification": {
+            "bearerChecked": true,
+            "bearerValid": true,
+            "signatureChecked": true,
+            "signatureValid": true,
+            "timestampChecked": true,
+            "timestampValid": true,
+            "timestampDiffSeconds": 0,
+            "computedSignature": "b77ff488bbfc29c996ee58d24dc6da9016cba5979bb0763361a164c775e050c5",
+            "isDuplicate": false,
+            "rejectedReason": null
+        },
+        "payload": {
+            "event": "gate_scan",
+            "token": "ALLOW_6663D079",
+            "device_id": "DEV-GATE-001D848D",
+            "scanned_at": "2026-10-14 10:43:19",
+            "result": "ALLOWED",
+            "status": "Access Granted (Gate Unlocked)",
+            "usage": {
+                "max_uses": 2,
+                "used": 1,
+                "remaining": 1,
+                "token_status": "ACTIVE",
+                "expires_at": "2026-10-31 23:59:59"
+            },
+            "payload_version": "1.1"
+        }
+    }
+]

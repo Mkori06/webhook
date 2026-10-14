@@ -1,0 +1,4 @@
+nodejs/node_modules/
+
+nodejs/.env
+php/.env

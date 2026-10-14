@@ -1,0 +1,734 @@
+<?php
+require_once __DIR__ . '/config.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart QR Access — Webhook Testing Dashboard (PHP)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: rgba(22, 30, 49, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --accent-primary: #8b5cf6;
+      --accent-hover: #7c3aed;
+      --success: #10b981;
+      --success-glow: rgba(16, 185, 129, 0.2);
+      --danger: #ef4444;
+      --danger-glow: rgba(239, 68, 68, 0.2);
+      --warning: #f59e0b;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(16, 185, 129, 0.05) 0px, transparent 50%);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      padding: 24px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+    }
+    .brand-info h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+    .brand-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .status-pills {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      font-size: 0.8rem;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 8px var(--success);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 20px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .stat-card:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-2px);
+    }
+    .stat-title {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .stat-val {
+      font-size: 2rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+    }
+    .stat-val.success { color: var(--success); }
+    .stat-val.danger { color: var(--danger); }
+    .stat-val.info { color: #a78bfa; }
+
+    .action-bar {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .action-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .btn-primary {
+      background: #4c1d95;
+      color: #ddd6fe;
+      border-color: #8b5cf6;
+    }
+    .btn-primary:hover {
+      background: #6d28d9;
+      color: #fff;
+    }
+    .btn-success {
+      background: rgba(16, 185, 129, 0.15);
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+    .btn-success:hover {
+      background: var(--success);
+      color: #fff;
+    }
+    .btn-danger-outline {
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    .btn-danger-outline:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+    .btn-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border-color: var(--card-border);
+    }
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-main);
+    }
+
+    .endpoint-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px dashed rgba(139, 92, 246, 0.4);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .endpoint-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .endpoint-code {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 12px;
+      border-radius: 6px;
+      color: #c4b5fd;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .events-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .event-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--card-border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.2s ease-in-out;
+      animation: fadeIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .event-card.allowed {
+      border-left-color: var(--success);
+      box-shadow: inset 0 0 30px rgba(16, 185, 129, 0.03);
+    }
+    .event-card.denied {
+      border-left-color: var(--danger);
+      box-shadow: inset 0 0 30px rgba(239, 68, 68, 0.03);
+    }
+
+    .event-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .event-badges {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      letter-spacing: 0.04em;
+    }
+    .badge-allowed {
+      background: var(--success-glow);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+    .badge-denied {
+      background: var(--danger-glow);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+    .badge-device {
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      border: 1px solid var(--card-border);
+    }
+    .badge-verif {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(139, 92, 246, 0.15);
+      color: #ddd6fe;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    .badge-verif.warn {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    .event-time {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    .event-body {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      align-items: center;
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      .event-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .token-display {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .token-code {
+      font-family: var(--font-mono);
+      font-size: 1rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      letter-spacing: 0.05em;
+    }
+    .status-msg {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .usage-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .usage-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+    }
+    .progress-bar {
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      overflow: hidden;
+      width: 100%;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--success);
+      border-radius: 3px;
+      transition: width 0.3s;
+    }
+    .progress-fill.full {
+      background: var(--danger);
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: #111827;
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      width: 100%;
+      max-width: 800px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 24px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .close-btn {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .code-block {
+      background: #030712;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      overflow-x: auto;
+      color: #c4b5fd;
+      margin-bottom: 16px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: var(--card-bg);
+      border: 1px dashed var(--card-border);
+      border-radius: 14px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="brand-icon">🐘</div>
+        <div class="brand-info">
+          <h1>Smart QR Webhook Receiver (PHP)</h1>
+          <p>Real-time Gate Scan Notification Inspector & Test Console</p>
+        </div>
+      </div>
+      <div class="status-pills">
+        <div class="pill">
+          <span class="pill-dot"></span>
+          <span id="poll-status">Auto-Refresh Active</span>
+        </div>
+        <div class="pill" id="sig-pill">
+          <span>HMAC: Checking...</span>
+        </div>
+        <div class="pill" id="bearer-pill">
+          <span>Bearer: Checking...</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Endpoint banner -->
+    <div class="endpoint-box">
+      <div class="endpoint-left">
+        <span>📍 <strong>Webhook Callback URL:</strong></span>
+        <code class="endpoint-code" id="webhook-url">http://&lt;your-host&gt;:8000/webhook.php</code>
+      </div>
+      <button class="btn btn-ghost" onclick="copyWebhookUrl()">📋 Copy URL</button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">Total Webhooks</div>
+        <div class="stat-val info" id="stat-total">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Allowed Scans</div>
+        <div class="stat-val success" id="stat-allowed">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Denied Scans</div>
+        <div class="stat-val danger" id="stat-denied">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Last Activity</div>
+        <div class="stat-val" style="font-size: 1.1rem; padding-top: 10px;" id="stat-last">None</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="action-bar">
+      <div class="action-group">
+        <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Simulate Webhook:</span>
+        <button class="btn btn-success" onclick="simulateWebhook('allowed')">🟢 Valid ALLOWED</button>
+        <button class="btn btn-danger-outline" onclick="simulateWebhook('denied')">🔴 Valid DENIED (Limit)</button>
+        <button class="btn btn-ghost" onclick="simulateWebhook('bad_sig')">⚠️ Bad HMAC Sig</button>
+        <button class="btn btn-ghost" onclick="simulateWebhook('stale')">⏱️ Stale Timestamp</button>
+        <button class="btn btn-ghost" onclick="simulateWebhook('bad_bearer')">🔒 Bad Bearer</button>
+      </div>
+      <div class="action-group">
+        <button class="btn btn-ghost" onclick="fetchEvents()">🔄 Refresh</button>
+        <button class="btn btn-danger-outline" onclick="clearEvents()">🗑️ Clear Logs</button>
+      </div>
+    </div>
+
+    <!-- Events List -->
+    <div class="section-title">
+      <span>Incoming Webhook Stream</span>
+      <span style="font-size: 0.85rem; font-weight: 400; color: var(--text-muted);" id="events-count-label">0 events recorded</span>
+    </div>
+
+    <div class="events-list" id="events-container">
+      <div class="empty-state">
+        <h3>No webhooks received yet</h3>
+        <p style="margin-top: 8px;">Waiting for gate scans from Smart QR Access platform or click "Simulate Webhook" above to test.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detail Modal -->
+  <div class="modal-backdrop" id="inspect-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-title">Webhook Inspection</h3>
+        <button class="close-btn" onclick="closeModal()">&times;</button>
+      </div>
+      <div>
+        <h4 style="margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted);">Payload Body (JSON)</h4>
+        <pre class="code-block" id="modal-payload"></pre>
+
+        <h4 style="margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted);">Verification & Security Audit</h4>
+        <pre class="code-block" id="modal-verif"></pre>
+
+        <h4 style="margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted);">HTTP Headers</h4>
+        <pre class="code-block" id="modal-headers"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let eventsData = [];
+
+    const currentHost = window.location.host;
+    const webhookUrlStr = `${window.location.protocol}//${currentHost}/webhook.php`;
+    document.getElementById('webhook-url').innerText = webhookUrlStr;
+
+    function copyWebhookUrl() {
+      navigator.clipboard.writeText(webhookUrlStr).then(() => {
+        alert('Copied to clipboard: ' + webhookUrlStr);
+      });
+    }
+
+    async function fetchEvents() {
+      try {
+        const res = await fetch('api.php?action=events');
+        const data = await res.json();
+        eventsData = data.events || [];
+
+        document.getElementById('stat-total').innerText = data.stats.total;
+        document.getElementById('stat-allowed').innerText = data.stats.allowed;
+        document.getElementById('stat-denied').innerText = data.stats.denied;
+
+        if (eventsData.length > 0) {
+          const d = new Date(eventsData[0].receivedAt);
+          document.getElementById('stat-last').innerText = d.toLocaleTimeString();
+        } else {
+          document.getElementById('stat-last').innerText = 'None';
+        }
+
+        document.getElementById('sig-pill').innerHTML = data.config.secretConfigured 
+          ? '<span style="color:var(--success)">● HMAC Secret Active</span>' 
+          : '<span style="color:var(--warning)">○ HMAC Not Configured</span>';
+        
+        document.getElementById('bearer-pill').innerHTML = data.config.bearerConfigured 
+          ? '<span style="color:var(--success)">● Bearer Auth Active</span>' 
+          : '<span style="color:var(--text-muted)">○ Bearer Inactive</span>';
+
+        renderEvents();
+      } catch (err) {
+        console.error('Fetch error:', err);
+      }
+    }
+
+    function renderEvents() {
+      const container = document.getElementById('events-container');
+      document.getElementById('events-count-label').innerText = `${eventsData.length} events recorded`;
+
+      if (eventsData.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h3>No webhooks received yet</h3>
+            <p style="margin-top: 8px;">Waiting for gate scans from Smart QR Access platform or click "Simulate Webhook" above to test.</p>
+          </div>`;
+        return;
+      }
+
+      container.innerHTML = eventsData.map((item, idx) => {
+        const p = item.payload || {};
+        const isRejected = p.result === 'REJECTED_401' || Boolean(item.verification?.rejectedReason);
+        const isAllowed = p.result === 'ALLOWED';
+        const cardClass = isRejected ? 'denied' : (isAllowed ? 'allowed' : 'denied');
+        
+        let badgeClass = 'badge-denied';
+        let resultLabel = p.result || 'UNKNOWN';
+        if (isAllowed) {
+          badgeClass = 'badge-allowed';
+        } else if (isRejected) {
+          badgeClass = 'badge-denied';
+          resultLabel = '⛔ 401 REJECTED';
+        }
+        
+        const usage = p.usage;
+
+        let usageHtml = '<div style="color: var(--text-muted); font-size: 0.8rem;">No usage info</div>';
+        if (usage) {
+          const percent = Math.min(100, Math.round((usage.used / (usage.max_uses || 1)) * 100));
+          const isExhausted = usage.remaining === 0;
+          usageHtml = `
+            <div class="usage-box">
+              <div class="usage-label">
+                <span>Usage: <strong>${usage.used} / ${usage.max_uses}</strong></span>
+                <span>Left: <strong style="${isExhausted ? 'color: var(--danger)' : ''}">${usage.remaining}</strong></span>
+              </div>
+              <div class="progress-bar">
+                <div class="progress-fill ${isExhausted ? 'full' : ''}" style="width: ${percent}%;"></div>
+              </div>
+            </div>`;
+        }
+
+        let verifBadge = '';
+        if (item.verification.signatureValid === true) {
+          verifBadge += '<span class="badge-verif">HMAC Verified ✓</span> ';
+        }
+        if (item.verification.bearerValid === true) {
+          verifBadge += '<span class="badge-verif">Bearer ✓</span> ';
+        }
+        if (item.verification.isDuplicate) {
+          verifBadge += '<span class="badge-verif warn">Duplicate Event</span> ';
+        }
+
+        return `
+          <div class="event-card ${cardClass}">
+            <div class="event-header">
+              <div class="event-badges">
+                <span class="badge ${badgeClass}">${resultLabel}</span>
+                <span class="badge badge-device">Gate: ${p.device_id || 'N/A'}</span>
+                ${verifBadge}
+              </div>
+              <div class="event-time">
+                Scanned: ${p.scanned_at || 'N/A'} (IST) • Received: ${new Date(item.receivedAt).toLocaleTimeString()}
+              </div>
+            </div>
+            <div class="event-body">
+              <div>
+                <div class="token-display">
+                  <span style="font-size: 0.75rem; color: var(--text-muted);">TOKEN:</span>
+                  <span class="token-code">${p.token || 'N/A'}</span>
+                </div>
+                <div class="status-msg">${p.status || 'No status message'}</div>
+              </div>
+              ${usageHtml}
+              <div style="font-size: 0.8rem; color: var(--text-muted); font-family: var(--font-mono);">
+                v${p.payload_version || '1.0'}
+              </div>
+              <div>
+                <button class="btn btn-ghost" onclick="inspectEvent(${idx})">🔍 Inspect</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function inspectEvent(index) {
+      const item = eventsData[index];
+      if (!item) return;
+
+      document.getElementById('modal-title').innerText = `Scan: ${item.payload?.token || 'Detail'} (${item.payload?.result || ''})`;
+      document.getElementById('modal-payload').innerText = JSON.stringify(item.payload, null, 2);
+      document.getElementById('modal-verif').innerText = JSON.stringify(item.verification, null, 2);
+      document.getElementById('modal-headers').innerText = JSON.stringify(item.headers, null, 2);
+
+      document.getElementById('inspect-modal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('inspect-modal').classList.remove('open');
+    }
+
+    async function clearEvents() {
+      if (!confirm('Clear all recorded webhook history?')) return;
+      await fetch('api.php?action=clear', { method: 'POST' });
+      fetchEvents();
+    }
+
+    async function simulateWebhook(type) {
+      try {
+        const res = await fetch('api.php?action=simulate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type })
+        });
+        const data = await res.json();
+        if (data.status === 200) {
+          setTimeout(fetchEvents, 200);
+        } else {
+          alert(`Simulation [${type}] returned HTTP ${data.status}:\n${JSON.stringify(data.response)}`);
+        }
+      } catch (err) {
+        alert('Simulation error: ' + err.message);
+      }
+    }
+
+    // Polling every 2.5 seconds
+    fetchEvents();
+    setInterval(fetchEvents, 2500);
+  </script>
+</body>
+</html>
